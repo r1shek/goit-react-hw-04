@@ -51,14 +51,17 @@ export default function App() {
     } catch (err) {
       setError(err.message);
       setLoading(false);
+      if (err.response && err.response.status === 403) {
+        toast.error(
+          'Access forbidden: Please check your API key or rate limits.'
+        );
+      } else {
+        toast.error('An error occurred while fetching images.');
+      }
     }
   };
 
   const handleSearchSubmit = (searchQuery) => {
-    if (searchQuery.trim() === '') {
-      toast.error('Please enter a search term');
-      return;
-    }
     setQuery(searchQuery);
     setImages([]);
     setPage(1);

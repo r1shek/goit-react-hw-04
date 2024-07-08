@@ -1,17 +1,20 @@
 import React, { useState } from 'react';
-import css from './SearchBar.module.css';
+import toast from 'react-hot-toast';
 
 export default function SearchBar({ onSubmit }) {
-  const [searchQuery, setSearchQuery] = useState('');
+  const [inputValue, setInputValue] = useState('');
 
-  const handleChange = (e) => {
-    setSearchQuery(e.target.value);
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit(searchQuery);
-    setSearchQuery('');
+    if (inputValue.trim() === '') {
+      toast.error('Please enter a search term');
+      return;
+    }
+    onSubmit(inputValue);
   };
 
   return (
@@ -19,8 +22,8 @@ export default function SearchBar({ onSubmit }) {
       <form onSubmit={handleSubmit}>
         <input
           type="text"
-          value={searchQuery}
-          onChange={handleChange}
+          value={inputValue}
+          onChange={handleInputChange}
           autocomplete="off"
           autofocus
           placeholder="Search images and photos"
